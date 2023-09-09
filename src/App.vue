@@ -74,21 +74,24 @@ export default {
 
     uploadImage() {
       if (!this.image) {
+        this.errorMsg = "Anda Belum Upload Image";
+
         return;
       }
 
       if (this.image) {
         const formData = new FormData();
         formData.append("image", this.image);
+        console.log(formData);
 
         axios
           .post(
-            "https://api.imgbb.com/1/upload?expiration=600&key=28927ac2f83a96c4f52f4a83945c8333",
-            formData
+            "https://api.imgbb.com/1/upload?key=28927ac2f83a96c4f52f4a83945c8333",
+            {
+              image: this.image,
+            }
           )
           .then((response) => {
-            // Tindakan yang ingin Anda lakukan setelah berhasil mengunggah gambar
-            this.imgbbUrl = response.data.data.url;
             this.errorMsg = "";
             this.imageData.push(this.image);
             this.image = "";
@@ -98,11 +101,9 @@ export default {
           .catch((error) => {
             // Tindakan yang ingin Anda lakukan jika upload gagal
             this.errorMsg = "Gagal mengunggah gambar ke ImgBB.";
-            this.imgbbUrl = "";
           });
       } else {
         this.errorMsg = "Pilih gambar terlebih dahulu.";
-        this.imgbbUrl = "";
       }
     },
   },
