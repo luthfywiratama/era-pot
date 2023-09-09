@@ -82,6 +82,7 @@ export default {
       if (this.image) {
         const formData = new FormData();
         formData.append("image", this.image);
+        console.log(formData);
 
         axios
           .post(
