@@ -82,14 +82,14 @@ export default {
       if (this.image) {
         const formData = new FormData();
         formData.append("image", this.image);
-        console.log(this.image);
 
         axios
-          .post("https://api.imgbb.com/1/upload", {
-            image: this.image,
-            key: "28927ac2f83a96c4f52f4a83945c8333", // Ganti dengan kunci API Anda dari imgbb.com
-          })
-
+          .post(
+            "https://api.imgbb.com/1/upload?key=28927ac2f83a96c4f52f4a83945c8333",
+            {
+              image: this.image,
+            }
+          )
           .then((response) => {
             this.errorMsg = "";
             this.imageData.push(this.image);
