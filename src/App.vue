@@ -58,21 +58,20 @@ export default {
   methods: {
     handleImage(e) {
       const selectedImage = e.target.files[0];
+      this.image = selectedImage;
 
-      this.createBase64Image(selectedImage);
+      // this.createBase64Image(selectedImage);
     },
 
     createBase64Image(file) {
       const reader = new FileReader();
-
       reader.onload = (e) => {
         this.image = e.target.result;
       };
       reader.readAsDataURL(file);
-      console.log(this.image);
     },
 
-    uploadImage() {
+    async uploadImage() {
       if (!this.image) {
         this.errorMsg = "Anda Belum Upload Image";
 
@@ -82,22 +81,21 @@ export default {
       if (this.image) {
         const formData = new FormData();
         formData.append("image", this.image);
-
-        axios
+        await axios
           .post(
             "https://api.imgbb.com/1/upload?key=28927ac2f83a96c4f52f4a83945c8333",
-            {
-              image: this.image,
-            }
+            formData
           )
           .then((response) => {
+            this.successMsg = "Berhasil Upload";
             this.errorMsg = "";
-            this.imageData.push(this.image);
+            this.imageData.push(URL.createObjectURL(this.image));
             this.image = "";
             const parsed = JSON.stringify(this.imageData);
             localStorage.setItem("image", parsed);
           })
           .catch((error) => {
+            console.log(error);
             // Tindakan yang ingin Anda lakukan jika upload gagal
             this.errorMsg = "Gagal mengunggah gambar ke ImgBB.";
           });
